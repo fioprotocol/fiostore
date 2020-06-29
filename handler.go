@@ -55,7 +55,11 @@ func ReqHandler(resp http.ResponseWriter, req *http.Request) {
 		resp.Write(nil)
 		return
 	}
-	log.Printf("%s: sent request to %s with txid %s\n", req.RemoteAddr, fioRequest.FioAddress, result.Txid)
+	if result.Code == 200 {
+		log.Printf("%s: sent request to %s with txid %s\n", req.RemoteAddr, fioRequest.FioAddress, result.Txid)
+	} else {
+		log.Printf("%s: request to %s failed %s\n", req.RemoteAddr, fioRequest.FioAddress, result.Message)
+	}
 	resp.WriteHeader(result.Code)
 	resp.Write(j)
 
