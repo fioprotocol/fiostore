@@ -20,7 +20,7 @@ var (
 )
 
 func init() {
-	log.SetFlags(log.LstdFlags|log.Lshortfile)
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	var err error
 
 	privkey = os.Getenv("PRIV_KEY")
