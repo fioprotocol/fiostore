@@ -15,6 +15,7 @@ Very simple http API for sending FIO requests.
 ```
  $ curl -s localhost:8080/v1/send_request -d '{
      "fio_address": "bp0-east@dapixbp",
+     "payee": "1LhFko2n6pDHkrw2uJQyrYdBkq8z2tEYmy",
      "chain_code": "BTC",
      "token_code": "BTC",
      "amount": 0.001,

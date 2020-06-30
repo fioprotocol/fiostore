@@ -9,6 +9,7 @@ import (
 
 type Request struct {
 	FioAddress  fio.Address `json:"fio_address"`
+	Payee       string      `json:"payee"`
 	ChainCode   string      `json:"chain_code"`
 	TokenCode   string      `json:"token_code"`
 	Amount      float32     `json:"amount"`
@@ -56,7 +57,7 @@ func parseRequest(body []byte) (r *Request, resp *Response, err error) {
 		resp.Message = "invalid FIO address"
 		err = errors.New("could not validate FIO address: " + string(r.FioAddress))
 		return nil, resp, err
-	case r.ChainCode == "", r.TokenCode == "", r.Amount == 0, r.Memo == "":
+	case r.ChainCode == "", r.TokenCode == "", r.Amount == 0, r.Memo == "", r.Payee == "":
 		resp.Message = "request fields cannot be blank"
 		err = errors.New(fmt.Sprintf("one or more inputs was empty %v", r))
 		return nil, resp, err
@@ -80,7 +81,7 @@ func sendFioRequest(r *Request) (resp *Response, err error) {
 	}
 
 	encrypted, err := fio.ObtRequestContent{
-		PayeePublicAddress: pubKey.PublicAddress,
+		PayeePublicAddress: r.Payee,
 		Amount:             fmt.Sprintf("%f", r.Amount),
 		ChainCode:          r.ChainCode,
 		TokenCode:          r.TokenCode,
