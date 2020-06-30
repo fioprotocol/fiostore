@@ -8,6 +8,7 @@ import (
 )
 
 var (
+	// the following are set via environment variables.
 	privkey string   // PRIV_KEY
 	nodeos  string   // NODEOS
 	sender  string   // FIO_ADDRESS

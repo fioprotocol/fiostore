@@ -1,5 +1,9 @@
 package main
 
+/*
+fiostore is a simple HTTP API that sends FIO funds requests.
+ */
+
 import (
 	fiostore "github.com/dapixio/fio-shopping"
 	"log"

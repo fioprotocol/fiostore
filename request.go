@@ -7,6 +7,7 @@ import (
 	"github.com/fioprotocol/fio-go"
 )
 
+// Request is the expected input from a client
 type Request struct {
 	FioAddress  fio.Address `json:"fio_address"`
 	Payee       string      `json:"payee"`
@@ -17,6 +18,7 @@ type Request struct {
 	AccessToken string      `json:"access_token"`
 }
 
+// Response is the returned data, HTTP code is set to value in Code field
 type Response struct {
 	Sent    bool   `json:"sent"`
 	Code    int    `json:"code"`
@@ -24,6 +26,8 @@ type Response struct {
 	Txid    string `json:"txid"`
 }
 
+// parseRequest validates that the incoming response is valid, if err is non-nil, a response is provided
+// with an error message.
 func parseRequest(body []byte) (r *Request, resp *Response, err error) {
 	resp = &Response{
 		Code: 400,
@@ -65,6 +69,7 @@ func parseRequest(body []byte) (r *Request, resp *Response, err error) {
 	return r, nil, nil
 }
 
+// sendFioRequest handles encrypting the request and sending to the chain
 func sendFioRequest(r *Request) (resp *Response, err error) {
 	resp = &Response{}
 	pubKey, found, err := api.PubAddressLookup(r.FioAddress, "FIO", "FIO")

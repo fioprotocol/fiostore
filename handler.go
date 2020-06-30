@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// ReqHandler is responsible for servicing the incoming request.
 func ReqHandler(resp http.ResponseWriter, req *http.Request) {
 	clientAddr := req.RemoteAddr
 	if xff {
