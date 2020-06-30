@@ -9,6 +9,7 @@ Very simple http API for sending FIO requests.
   - NODEOS what api to use for sending requests
   - TOKENS comma seperated list of authentication tokens
   - FIO_ADDRESS the sender's FIO address
+  - TRUST_XFF (any non-empty value) should the X-Forwarded-For request header be used for logging the IP?
 
 ## example:
 
