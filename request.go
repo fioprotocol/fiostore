@@ -38,7 +38,7 @@ func parseRequest(body []byte) (r *Request, resp *Response, err error) {
 	err = json.Unmarshal(body, r)
 	if err != nil {
 		resp.Code = 400
-		resp.Message = "could not decode request body, please check the input. " + err.Error()
+		resp.Message = fmt.Sprintf("could not decode request body, please check the input. %q", err.Error())
 		return
 	}
 
@@ -59,11 +59,11 @@ func parseRequest(body []byte) (r *Request, resp *Response, err error) {
 	switch true {
 	case !r.FioAddress.Valid():
 		resp.Message = "invalid FIO address"
-		err = errors.New("could not validate FIO address: " + string(r.FioAddress))
+		err = errors.New(fmt.Sprintf("could not validate FIO address: %q", r.FioAddress))
 		return nil, resp, err
 	case r.ChainCode == "", r.TokenCode == "", r.Amount == 0, r.Memo == "", r.Payee == "":
 		resp.Message = "request fields cannot be blank"
-		err = errors.New(fmt.Sprintf("one or more inputs was empty %v", r))
+		err = errors.New("one or more inputs was empty")
 		return nil, resp, err
 	}
 	return r, nil, nil
@@ -81,7 +81,7 @@ func sendFioRequest(r *Request) (resp *Response, err error) {
 
 	if !found {
 		resp.Code = 404
-		resp.Message = fmt.Sprintf("no FIO key found for %q", string(r.FioAddress))
+		resp.Message = fmt.Sprintf("no FIO key found for %q", r.FioAddress)
 		return resp, errors.New("fio address not found")
 	}
 
