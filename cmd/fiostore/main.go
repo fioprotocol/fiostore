@@ -5,7 +5,7 @@ fiostore is a simple HTTP API that sends FIO funds requests.
  */
 
 import (
-	fiostore "github.com/dapixio/fio-shopping"
+	fiostore "github.com/fioprotocol/fiostore"
 	"log"
 	"net/http"
 )

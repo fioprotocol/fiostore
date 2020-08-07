@@ -21,7 +21,7 @@ Very simple http API for sending FIO requests.
      "token_code": "BTC",
      "amount": 0.001,
      "memo": "invoice for cool t-shirt",
-     "access_token": "abc123"
+     "access_token": "your_authentication_token_code_here"
    }' | jq .
    {
      "sent": true,
