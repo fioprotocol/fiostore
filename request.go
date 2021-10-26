@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/fioprotocol/fio-go"
+	"github.com/fioprotocol/fio-go/eos"
+	"log"
 )
 
 // Request is the expected input from a client
@@ -71,11 +73,19 @@ func parseRequest(body []byte) (r *Request, resp *Response, err error) {
 
 // sendFioRequest handles encrypting the request and sending to the chain
 func sendFioRequest(r *Request) (resp *Response, err error) {
+	if ok := api.RefreshFees(); !ok {
+		log.Println("Warning: could not refresh FIO fees.")
+	}
 	resp = &Response{}
 	pubKey, found, err := api.PubAddressLookup(r.FioAddress, "FIO", "FIO")
 	if err != nil {
 		resp.Code = 500
 		resp.Message = "server error while retrieving address"
+		switch err.(type) {
+		case eos.APIError:
+			err = fmt.Errorf("%s: %+v", err.Error(), err.(eos.APIError).ErrorStruct)
+			log.Println(err)
+		}
 		return resp, err
 	}
 
@@ -102,6 +112,11 @@ func sendFioRequest(r *Request) (resp *Response, err error) {
 	if err != nil {
 		resp.Code = 500
 		resp.Message = fmt.Sprintf("could not send transaction: %q", err.Error())
+		switch err.(type) {
+		case eos.APIError:
+			err = fmt.Errorf("%s: %+v", err.Error(), err.(eos.APIError).ErrorStruct)
+			log.Println(err)
+		}
 		return resp, err
 	}
 
